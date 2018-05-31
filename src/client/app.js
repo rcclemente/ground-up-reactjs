@@ -6,6 +6,7 @@ import Footer from './layout/Footer'
 import Header from './layout/Header'
 import Main from './layout/Main'
 import Sidebar from './layout/Sidebar'
+import ErrorBoundary from './layout/ErrorBoundary'
 
 
 const book = {
@@ -21,17 +22,19 @@ class App extends Component {
         book: {
           title: "hunger games",
           author: "Suzanne Collins"
-        }
+        },
+        // food: 1
       }
     }
 
     render() {
-
         console.log(this.state)
         return (
             <div>
               <Header />
-              <Main name="Ryan" />
+              <ErrorBoundary>
+                <Main food={this.state.food}/>
+              </ErrorBoundary>
               <Footer />
             </div>
         )

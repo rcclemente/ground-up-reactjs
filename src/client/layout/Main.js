@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class Main extends Component {
   constructor(){
@@ -9,7 +10,7 @@ class Main extends Component {
         book: "hunger games",
         author: "Suzanne Collins"
       },
-      food: "foo",
+      // food: "foo",
       place: "bar"
     }
   }
@@ -30,11 +31,14 @@ class Main extends Component {
     console.log(rest)
     return (
       <div id="main" className="section">
+        my food = { this.props.food }
+        <hr />
         my name is { name } <br />
         my favourite author { favourite.author } <br />
         my favourite book { favourite.book } <br />
+        {/* <Children /> */}
+        <button onClick={() => this.changeName('NewName')}>Change Name</button>
 
-        {/* <button onClick={() => this.changeName('NewName')}>Change Name</button> */}
         <input type="text" onChange={(e) => this.changeInput(e)} />
         <hr />
       </div>
@@ -42,4 +46,11 @@ class Main extends Component {
   }
 }
 
+Main.defaultProps = {
+  food: "chicken"
+}
+
+Main.propTypes = {
+  food: PropTypes.string.isRequired
+}
 export default Main
