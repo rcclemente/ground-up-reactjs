@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { Switch, Route, Redirect } from 'react-router-dom'
+
+import Home from './Home'
+import About from './About'
+import NoMatch from './NoMatch'
+import BookList from '../components/book/BookList'
+
 class Main extends Component {
   constructor(){
     super()
@@ -25,22 +32,25 @@ class Main extends Component {
 
   render() {
     const { name, favourite, ...rest } = this.state
-    // const name = this.state.name
-    // const favourite = this.state.favourite
 
-    console.log(rest)
     return (
       <div id="main" className="section">
-        my food = { this.props.food }
-        <hr />
-        my name is { name } <br />
-        my favourite author { favourite.author } <br />
-        my favourite book { favourite.book } <br />
-        {/* <Children /> */}
-        <button onClick={() => this.changeName('NewName')}>Change Name</button>
+        <Switch>
+          <Redirect exact from="/" to="/home"/>
+          <Route path="/" exact render={() => {
+            return "I am a Main component!!!"
+          }} />
 
-        <input type="text" onChange={(e) => this.changeInput(e)} />
-        <hr />
+          {/* <Route path="/home" exact render={() => <Home />} /> */}
+          {/* <Route path="/about" exact render={() => <About />} /> */}
+
+          <Route path="/home" exact component={Home }/>
+          <Route path="/about/:id?" component={About}/>
+          <Route path="/books" component={BookList}/>
+
+          <Route render={() => <NoMatch />} />
+          {/* <Route path="/books" exact render={() => <Books />} /> */}
+        </Switch>
       </div>
     )
   }
