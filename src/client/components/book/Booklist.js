@@ -10,16 +10,18 @@ class BookList extends Component {
     super()
     this.state = {
       hasDataLoaded: false,
-      books: {}
+      books: [] ,
+      error: ''
     }
   }
 
   getBooks = () => {
-    fetch(bookData)
+    fetch('../../../../data/books.json')
       .then(response => response.json())
       .then(json => {
         console.log(json)
         this.setState({
+          hasDataLoaded: true,
           books: json
         })
       })
@@ -34,15 +36,39 @@ class BookList extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.getBooks()
-    }, 2000)
+    }, 1000)
   }
 
   render() {
+    const { books, hasDataLoaded } = this.state
+
+    if (!hasDataLoaded) {
+      return "Loading books..."
+    }
+
     return (
       <div>
         <h1 className="title">Top Books</h1>
-        <ul>
-          <li>Book Title</li>
+        <ul className="book-list columns is-multiline">
+          {/* <li>Book Title</li> */}
+          {
+            books.books.map(book => {
+              return (
+                <li key={book.id} className="column is-one-quarter book-item">
+                  <div className="card">
+                    <div className="card-content">
+                      <div className="content">
+                        <Link to={`/book/${book.id}`} >{ book.title }</Link>
+                      </div>
+                      <span className="is-size-7">
+                        by: { book.authorId }
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              )
+            })
+          }
         </ul>
       </div>
     )

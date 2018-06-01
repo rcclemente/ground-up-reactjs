@@ -7,6 +7,7 @@ import Home from './Home'
 import About from './About'
 import NoMatch from './NoMatch'
 import BookList from '../components/book/BookList'
+import BookDetail from '../components/book/BookDetail'
 
 class Main extends Component {
   constructor(){
@@ -47,6 +48,7 @@ class Main extends Component {
           <Route path="/home" exact component={Home }/>
           <Route path="/about/:id?" component={About}/>
           <Route path="/books" component={BookList}/>
+          <Route path="/book/:id?" component={BookDetail}/>
 
           <Route render={() => <NoMatch />} />
           {/* <Route path="/books" exact render={() => <Books />} /> */}
