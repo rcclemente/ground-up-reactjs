@@ -9,6 +9,8 @@ import Sidebar from './layout/Sidebar'
 import ErrorBoundary from './layout/ErrorBoundary'
 import Home from './layout/Home'
 
+import { Provider as UserContextProvider } from './utils/providers/UserContext'
+import { Provider as ThemeContextProvider } from './utils/providers/ThemeContext'
 
 const book = {
   title: "hunger games",
@@ -24,7 +26,6 @@ class App extends Component {
           title: "hunger games",
           author: "Suzanne Collins"
         },
-        // food: 1
       }
     }
 
@@ -32,14 +33,17 @@ class App extends Component {
         console.log(this.state)
         return (
           <HashRouter>
-            <div className="container">
-              <Header />
-              <ErrorBoundary>
-                {/* <Main food={this.state.food}/> */}
-                <Main food={this.state.food}/>
-              </ErrorBoundary>
-              <Footer />
-            </div>
+            <ThemeContextProvider>
+              <UserContextProvider>
+                <div className="container">
+                  <Header />
+                  <ErrorBoundary>
+                    <Main />
+                  </ErrorBoundary>
+                  <Footer />
+                </div>
+              </UserContextProvider>
+            </ThemeContextProvider>
           </HashRouter>
         )
     }
