@@ -8,6 +8,8 @@ import About from './About'
 import NoMatch from './NoMatch'
 import BookList from '../components/book/BookList'
 import BookDetail from '../components/book/BookDetail'
+import Authors from '../components/Authors'
+import AuthorDetail from '../components/AuthorDetail'
 
 class Main extends Component {
   constructor(){
@@ -49,6 +51,8 @@ class Main extends Component {
           <Route path="/about/:id?" component={About}/>
           <Route path="/books" component={BookList}/>
           <Route path="/book/:id?" component={BookDetail}/>
+          <Route path="/authors" component={Authors}/>
+          <Route path="/author/:id?" component={AuthorDetail}/>
 
           <Route render={() => <NoMatch />} />
           {/* <Route path="/books" exact render={() => <Books />} /> */}

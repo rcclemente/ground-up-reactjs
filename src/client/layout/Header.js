@@ -21,6 +21,9 @@ class Header extends Component {
               <li>
                 <NavLink to="/books" activeClassName="active" activeStyle={{ color: 'red' }} exact>Books</NavLink>
               </li>
+              <li>
+                <NavLink to="/authors" activeClassName="active" activeStyle={{ color: 'red' }} exact>Authors</NavLink>
+              </li>
             </ul>
           </nav>
         </div>

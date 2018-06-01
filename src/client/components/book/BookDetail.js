@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
-import bookData from '../../../../data/books.json'
-import authors from '../../../../data/authors.json'
+// import bookData from '../../../../data/books.json'
+// import authors from '../../../../data/authors.json'
+import axios from 'axios'
 
 class BookDetail extends Component {
 
@@ -59,9 +60,43 @@ class BookDetail extends Component {
       })
   }
 
+  getData() {
+
+    const getBooks = () => axios.get( '../../../../data/books.json')
+    const getAuthors = () => axios.get( '../../../../data/authors.json')
+
+    const { id } = this.props.match.params
+
+    console.log(id)
+
+    axios
+      .all([getBooks(), getAuthors()])
+      .then(axios.spread((books, authors) => {
+        console.log(books)
+        console.log(authors)
+        const book = books.data.books.find(book => book.id === parseInt(id))
+        const author = authors.data.authors.find(author => author.id == parseInt(book.authorId))
+        this.setState({
+          hasDataLoaded: true,
+          book: book,
+          author: author
+        })
+      }))
+      .catch(error => {
+        if (error) {
+          this.setState({
+            hasDataLoaded: false,
+            error: error
+          })
+        }
+        console.log('errorrr')
+      })
+  }
+
   componentDidMount() {
     setTimeout(() => {
-      this.getBookDetail()
+      // this.getBookDetail()
+      this.getData()
     }, 1000)
   }
 
@@ -78,9 +113,12 @@ class BookDetail extends Component {
 
     return (
       <div>
+        <button onClick={() => this.props.history.goBack()}>Back</button>
+
         <p className="is-text-6">Viewing current book:</p>
         <h1 className="title">Title: { book.title }</h1>
-        <p className="subtitle">Author: { author }</p>
+        {/* <p className="subtitle">Author: { author }</p> */}
+        <p className="subtitle">Author: <Link to={`/author/${book.authorId}`}>{ author.name }</Link></p>
         <hr />
         <p>{ book.summary }</p>
       </div>

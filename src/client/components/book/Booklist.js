@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import bookData from '../../../../data/books.json'
 import authors from '../../../../data/authors.json'
 
+import BookItem from './BookItem'
+import axios from 'axios'
+
 class BookList extends Component {
 
   constructor() {
@@ -15,7 +18,7 @@ class BookList extends Component {
     }
   }
 
-  getBooks = () => {
+  getBook = () => {
     fetch('../../../../data/books.json')
       .then(response => response.json())
       .then(json => {
@@ -34,45 +37,71 @@ class BookList extends Component {
   }
 
   getAuthor = id => {
-    // console.log(authors)
+    console.log(authors)
     let author = authors.authors.find(author => author.id === parseInt(id))
     return author.name
   }
 
+  getAuthorName = id => {
+    const { authors } = this.state
+    let author = authors.find(author => author.id === parseInt(id))
+    return author.name
+  }
+
+  getData() {
+    const getBooks = () => axios.get( '../../../../data/books.json')
+    const getAuthors = () => axios.get( '../../../../data/authors.json')
+
+    axios
+      .all([getBooks(), getAuthors()])
+      .then(axios.spread((books, authors) => {
+        // console.log(books)
+        // console.log(authors)
+        this.setState({
+          hasDataLoaded: true,
+          books: books.data.books,
+          authors: authors.data.authors
+        })
+      }))
+      .catch(error => {
+        if (error) {
+          this.setState({
+            hasDataLoaded: false,
+            error: error
+          })
+        }
+      })
+  }
+
   componentDidMount() {
     setTimeout(() => {
-      this.getBooks()
+      // this.getBooks()
+      this.getData()
     }, 1000)
   }
 
   render() {
-    const { books, hasDataLoaded } = this.state
+    const { books, hasDataLoaded, error } = this.state
 
     if (!hasDataLoaded) {
       return "Loading books..."
+    }
+
+    if (error) {
+      return "Error loading"
     }
 
     return (
       <div>
         <h1 className="title">Top Books</h1>
         <ul className="book-list columns is-multiline">
-          {/* <li>Book Title</li> */}
           {
-            books.books.map(book => {
+            books.map(book => {
               return (
-                <li key={book.id} className="column is-one-quarter book-item">
-                  <div className="card">
-                    <div className="card-content">
-                      <div className="content">
-                        <Link to={`/book/${book.id}`} >{ book.title }</Link>
-                      </div>
-                      <span className="is-size-7">
-                        {/* by: { book.authorId } */}
-                        by: { this.getAuthor(book.authorId) }
-                      </span>
-                    </div>
-                  </div>
-                </li>
+                <BookItem
+                  key={book.id}
+                  book={book}
+                  authorName={this.getAuthorName(book.authorId)} />
               )
             })
           }
