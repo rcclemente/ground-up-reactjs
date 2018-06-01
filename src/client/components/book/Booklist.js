@@ -33,6 +33,12 @@ class BookList extends Component {
       })
   }
 
+  getAuthor = id => {
+    // console.log(authors)
+    let author = authors.authors.find(author => author.id === parseInt(id))
+    return author.name
+  }
+
   componentDidMount() {
     setTimeout(() => {
       this.getBooks()
@@ -61,7 +67,8 @@ class BookList extends Component {
                         <Link to={`/book/${book.id}`} >{ book.title }</Link>
                       </div>
                       <span className="is-size-7">
-                        by: { book.authorId }
+                        {/* by: { book.authorId } */}
+                        by: { this.getAuthor(book.authorId) }
                       </span>
                     </div>
                   </div>
