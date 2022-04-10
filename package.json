@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "kind-of": "^6.0.3",
-    "minimist": "^1.2.2",
+    "minimist": "^1.2.6",
     "querystringify": "~> 2.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
